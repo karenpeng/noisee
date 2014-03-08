@@ -92,11 +92,59 @@
     line(this.b1.loc.x, this.b1.loc.y, this.b2.loc.x, this.b2.loc.y);
   };
 
+  /////////////////////////////////////////////////////
+
+  function Bullet(x, y, r, left) {
+    this.left = left;
+    this.life = 24;
+    this.loc = new PVector(x, y);
+    if (this.left) {
+      this.vel = new PVector(2, 0);
+      this.acc = new PVector(2, 0);
+    } else {
+      this.vel = new PVector(-2, 0);
+      this.acc = new PVector(-2, 0);
+
+    }
+    this.radius = r;
+    this.isDead = false;
+  }
+
+  Bullet.prototype.update = function () {
+    this.life--;
+    this.loc.add(this.vel);
+    this.vel.add(this.acc);
+  };
+
+  Bullet.prototype.die = function () {
+    if (this.life <= 0) {
+      this.isDead = true;
+    }
+    if (this.left) {
+      if (this.loc.x - this.radius > width) {
+        this.isDead = true;
+      }
+    } else {
+      if (this.loc.x + this.radius < 0) {
+        this.isDead = true;
+      }
+    }
+  };
+
+  Bullet.prototype.show = function () {
+    noFill();
+    strokeWeight(1);
+    stroke(30);
+    ellipse(this.loc.x, this.loc.y, this.radius * 2, this.radius * 2);
+  };
+
   ///////////////////////////////////////////////////////////////////
 
   function Mash(number, bones, size, x, y) {
+    this.left = true;
     this.b = [];
     this.s = [];
+    this.bullets = [];
     this.center = new PVector();
     this.n = number;
     this.up = false;
@@ -104,6 +152,7 @@
     this.counter = 0;
     this.preH = 0;
     this.me = false;
+    this.size = size;
 
     for (var j = 0; j < this.n; j++) {
       this.b.push(new Ball(x + cos(j * PI / this.n * 2) * size, y +
@@ -146,6 +195,15 @@
       item.connect();
       item.constrainLength();
     });
+    for (var j = this.bullets.length - 1; j > -1; j--) {
+      this.bullets[j].die();
+      if (this.bullets[j].isDead) {
+        this.bullets.splice(j, 1);
+      } else {
+        this.bullets[j].update();
+        this.bullets[j].show();
+      }
+    }
   };
 
   Mash.prototype.getCenter = function () {
@@ -172,16 +230,9 @@
   Mash.prototype.goUp = function (h) {
     h = Math.floor(h);
     if (abs(h - this.preH) > 2) {
-      //console.log(h, this.preH);
       var up = new PVector(0, -h);
       this.addF(up);
       this.up = true;
-      // if (this.me && pitchDetector.turnOn) {
-      //   var upData = {
-      //     hh: h
-      //   };
-      //   sendWithType('upData', upData);
-      // }
       this.preH = h;
     } else {
       this.up = false;
@@ -193,6 +244,24 @@
       sendWithType('upData', upData);
     }
   };
+
+  Mash.prototype.check = function (otherMash) {
+    var that = this;
+    if (otherMash.bullets.length > 0) {
+      otherMash.bullets.forEach(function (item) {
+        if (item.radius > 0) {
+          var dis = PVector.sub(item.loc, that.center);
+          var disL = dis.mag();
+          console.log(disL, that.size);
+          if (disL < item.radius + that.size) {
+            that.hurt = true;
+            var f = item.vel.mult(0.2);
+            that.addF(f);
+          }
+        }
+      })
+    }
+  }
 
   Mash.prototype.show = function () {
     stroke(30);
@@ -215,4 +284,6 @@
   exports.Ball = Ball;
   exports.Spring = Spring;
   exports.Mash = Mash;
+  exports.Bullet = Bullet;
+
 })(this);

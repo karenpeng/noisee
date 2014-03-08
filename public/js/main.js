@@ -7,17 +7,10 @@
   var invisibleSpring;
   var counter;
   var mashes = [];
-  var blocks = [];
-  var bullets = [];
-  var wat = 0.01;
   exports.hit = 0;
-  var blockCount = 0;
   var theta = 0;
   var connectCount;
   exports.iAmInit;
-  // var shootCount = 0;
-  var headLine;
-  var interval;
 
   function beCenter(w, selector) {
     var windowWidth = window.innerWidth;
@@ -33,7 +26,6 @@
     exports.width = width;
     exports.iAmInit = false;
     connectCount = 0;
-    interval = 80;
 
     smooth();
     frameRate(24);
@@ -47,15 +39,16 @@
   exports.reStart = function () {
     mashes = [];
     if (exports.iAmInit) {
-      mashes[0] = new Mash(19, 4, 50, width / 4, height / 4);
+      mashes[0] = new Mash(19, 4, 50, width / 6, height / 4);
       mashes[0].me = true;
-      mashes[1] = new Mash(19, 4, 50, width * 3 / 4, height / 4);
+      mashes[1] = new Mash(19, 4, 50, width * 5 / 6, height / 4);
+      mashes[1].left = false;
     } else {
-      mashes[0] = new Mash(19, 4, 50, width * 3 / 4, height / 4);
+      mashes[0] = new Mash(19, 4, 50, width * 5 / 6, height / 4);
       mashes[0].me = true;
-      mashes[1] = new Mash(19, 4, 50, width / 4, height / 4);
+      mashes[0].left = false;
+      mashes[1] = new Mash(19, 4, 50, width / 6, height / 4);
     }
-    bullets = [];
     exports.mashes = mashes;
   };
 
@@ -74,43 +67,16 @@
       }
     });
     mashes[0].goUp(mapPitch(pitchDetector.pitch));
-
-    // if (wat >= 1) {
-    //   wat -= 0.00001;
-    // }
-    if (interval < 4) {
-      interval = 4;
+    if (mashes.length > 1) {
+      mashes[0].check(mashes[1]);
+      mashes[1].check(mashes[0]);
     }
 
     if (connectAlready) {
-      // wat += 0.00001;
-      interval -= 0.004;
       theta++;
       connectCount++;
-      console.log(interval);
-
-      //if (map(cos(theta), -1, 1, 0, 1) < wat) {
-      if (connectCount % Math.round(interval) === 0) {
-        //if (connectCount * 4 % 200 === 0) {
-        getText();
-        if (headLine) {
-          blocks.push(new Block(headLine, theta));
-        }
-      }
     }
 
-    for (var i = blocks.length - 1; i > -1; i--) {
-      blocks[i].die();
-      if (blocks[i].isDead) {
-        blocks.splice(i, 1);
-      } else {
-        blocks[i].move();
-        blocks[i].show();
-        mashes.forEach(function (item) {
-          blocks[i].check(item);
-        })
-      }
-    }
     /*
   mash.b.forEach(function (item) {
     jumper.b.forEach(function (key) {
@@ -161,18 +127,6 @@
     }
   }
 */
-    for (var j = bullets.length - 1; j > -1; j--) {
-      bullets[j].die();
-      if (bullets[j].isDead) {
-        bullets.splice(j, 1);
-      } else {
-        bullets[j].update();
-        bullets[j].show();
-        blocks.forEach(function (item) {
-          bullets[j].check(item);
-        })
-      }
-    }
 
     if (mashes[0].hurt) {
       exports.hit += 0.6;
@@ -189,8 +143,6 @@
     fill(0);
     var c = connectCount.toString();
     text(c, mashes[0].center.x, mashes[0].center.y);
-    exports.bullets = bullets;
-
   };
 
   function mapPitch(input) {
@@ -215,17 +167,6 @@
     return volume;
   }
 
-  function getText() {
-    if ((asyncCount === 0 && blockCount === 0) || asyncCount - blockCount < 0) {
-      getNYTimesData();
-      blockCount = 0;
-    }
-    headLine = articleObj[blockCount];
-    if (asyncCount >= blockCount) {
-      blockCount++;
-    }
-  }
-
   function drawBoundary() {
     fill(34);
     noStroke();
@@ -242,14 +183,16 @@
     if (event.which === 32) {
       if (!mashes[0].hurt) {
         var r = mapVolume(pitchDetector.volume);
-        bullets.push(new Bullet(mashes[0].center.x, mashes[0].center.y,
-          r));
+        mashes[0].bullets.push(new Bullet(mashes[0].center.x, mashes[0].center
+          .y,
+          r, mashes[0].left));
 
         if (connectAlready) {
           var bulletInfo = {
             bulletX: mashes[0].center.x,
             bulletY: mashes[0].center.y,
-            bulletR: r
+            bulletR: r,
+            bulletL: mashes[0].left
           };
           sendWithType('bulletInfo', bulletInfo);
 

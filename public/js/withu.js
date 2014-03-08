@@ -60,8 +60,8 @@
           break;
 
         case 'bulletInfo':
-          bullets.push(new Bullet(message.data.bulletX, message
-            .data.bulletY, message.data.bulletR));
+          mashes[1].bullets.push(new Bullet(message.data.bulletX, message
+            .data.bulletY, message.data.bulletR, message.data.bulletL));
           break;
 
           // case 'shootingData':
