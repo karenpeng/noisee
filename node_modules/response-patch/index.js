@@ -1,0 +1,1 @@
+module.exports = process.env.RESPONSE_PATCH_COV ? require('./lib-cov/patch') : require('./lib/patch');
