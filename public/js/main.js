@@ -7,7 +7,6 @@
   var invisibleSpring;
   var counter;
   var mashes = [];
-  var theta = 0;
   var connectCount;
   exports.iAmInit;
 
@@ -75,7 +74,6 @@
     mashes[0].goUp(mapPitch(pitchDetector.pitch));
 
     if (connectAlready) {
-      theta++;
       connectCount++;
     }
 
@@ -176,13 +174,13 @@
   }
 
   function gameOver() {
-    if (mashes[0].hit >= width / 2 - mashes[0].size) {
+    if (mashes[0].hit >= width / 2 - mashes[0].size / 2) {
       textSize(60);
       fill(0);
       text("YOU WIN", mashes[1].center.x - mashes[1].size / 2, height / 2);
       noLoop();
     }
-    if (mashes[1].hit >= width / 2 - mashes[0].size) {
+    if (mashes[1].hit >= width / 2 - mashes[0].size / 2) {
       textSize(60);
       fill(0);
       text("YOU WIN", mashes[0].center.x - mashes[0].size / 2, height / 2);

@@ -27,16 +27,6 @@
     });
   };
 
-  var peer = new Peer({
-    // host: 'resonate-peer-server.herokuapp.com',
-    // port: 80
-    key: 'qvjlc339a88jv2t9'
-  });
-
-  peer.on('open', function (id) {
-    $('#pid').text(id);
-  });
-
   function onConnection() {
     exports.connections.on('open', function () {
 
@@ -64,17 +54,6 @@
             .data.bulletY, message.data.bulletR, message.data.bulletL));
           break;
 
-          // case 'shootingData':
-          //   hisVoice = document.getElementById("somebodyVoice");
-          //   if (message.data.heShoots) {
-          //     console.log("play");
-          //     hisVoice.play();
-          //   } else {
-          //     console.log("pause");
-          //     hisVoice.pause();
-          //   }
-          //   break;
-
         default:
           console.log('unknow message type:', message.type);
         }
@@ -90,6 +69,14 @@
 
   }
   connectionReady(onConnection);
+
+  var peer = new Peer({
+    key: 'qvjlc339a88jv2t9'
+  });
+
+  peer.on('open', function (id) {
+    $('#pid').text(id);
+  });
 
   peer.on('connection', function (conn) {
     if (exports.connections) {
