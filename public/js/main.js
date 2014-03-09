@@ -7,7 +7,6 @@
   var invisibleSpring;
   var counter;
   var mashes = [];
-  exports.hit = 0;
   var theta = 0;
   var connectCount;
   exports.iAmInit;
@@ -25,6 +24,7 @@
     beCenter(width, "canvas");
     exports.width = width;
     exports.iAmInit = false;
+    exports.boundary = width;
     connectCount = 0;
 
     smooth();
@@ -49,6 +49,7 @@
       mashes[0].left = false;
       mashes[1] = new Mash(19, 4, 50, width / 6, height / 4);
     }
+    exports.boundary = width / 2;
     exports.mashes = mashes;
   };
 
@@ -58,19 +59,20 @@
     });
 
     background(255);
+    if (mashes.length > 1) {
+      stroke(0);
+      line(width / 2, 0, width / 2, height);
+    }
     mashes.forEach(function (item) {
       item.renew();
       item.show();
+      item.shoot();
       item.getCenter();
       if (!item.up) {
         item.addF(gravity);
       }
     });
     mashes[0].goUp(mapPitch(pitchDetector.pitch));
-    if (mashes.length > 1) {
-      mashes[0].check(mashes[1]);
-      mashes[1].check(mashes[0]);
-    }
 
     if (connectAlready) {
       theta++;
@@ -127,17 +129,11 @@
     }
   }
 */
-
-    if (mashes[0].hurt) {
-      exports.hit += 0.6;
-    }
-    drawBoundary();
-
-    if (exports.hit >= height / 2) {
-      textSize(60);
-      fill(255);
-      text("GAME OVER", width / 2 - 180, height / 2);
-      noLoop();
+    if (mashes.length > 1) {
+      mashes[0].check(mashes[1]);
+      mashes[1].check(mashes[0]);
+      gameOver();
+      drawBoundary();
     }
 
     fill(0);
@@ -168,14 +164,31 @@
   }
 
   function drawBoundary() {
-    fill(34);
+    fill(0);
     noStroke();
-    rect(0, 0, width, exports.hit);
-    rect(0, height - exports.hit, width, exports.hit);
-    rect(0, 0, exports.hit, height);
-    rect(width - exports.hit, 0, exports.hit, height);
+    if (mashes[0].left) {
+      rect(0, 0, mashes[0].hit, height);
+      rect(width - mashes[1].hit, 0, mashes[1].hit, height);
+    } else {
+      rect(0, 0, mashes[1].hit, height);
+      rect(width - mashes[0].hit, 0, mashes[0].hit, height);
+    }
   }
 
+  function gameOver() {
+    if (mashes[0].hit >= width / 2 - mashes[0].size) {
+      textSize(60);
+      fill(0);
+      text("YOU WIN", mashes[1].center.x - mashes[1].size / 2, height / 2);
+      noLoop();
+    }
+    if (mashes[1].hit >= width / 2 - mashes[0].size) {
+      textSize(60);
+      fill(0);
+      text("YOU WIN", mashes[0].center.x - mashes[0].size / 2, height / 2);
+      noLoop();
+    }
+  }
   /////////////////////////////////////////////////////////////////
 
   $(window).keydown(function (event) {
@@ -195,28 +208,10 @@
             bulletL: mashes[0].left
           };
           sendWithType('bulletInfo', bulletInfo);
-
-          // if (shootCount < 1) {
-          //   var shootingData = {
-          //     heShoots: true
-          //   };
-          //   sendWithType('shootingData', shootingData);
-          //   shootCount++;
-          // }
         }
       }
     }
   });
-
-  // $(window).keyup(function (event) {
-  //   if (connectAlready) {
-  //     var shootingData = {
-  //       heShoots: false
-  //     };
-  //     sendWithType('shootingData', shootingData);
-  //     shootCount = 0;
-  //   }
-  // });
 
   $(window).keydown(function (event) {
     //event.preventDefault();

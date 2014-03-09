@@ -10,23 +10,36 @@
     this.mass = m;
     this.check = false;
   }
-  Ball.prototype.update = function () {
+  Ball.prototype.update = function (hit, left) {
     this.vel.add(this.acc);
     this.vel.mult(this.damping);
     this.loc.add(this.vel);
     this.acc.mult(0);
-    if (this.loc.x <= this.mass + hit || this.loc.x >= width - this.mass -
-      hit) {
-      this.vel.x *= -0.9;
+    if (left) {
+      if (this.loc.x <= this.mass + hit || this.loc.x >= boundary -
+        this.mass) {
+        this.vel.x *= -0.9;
+      }
+      if (this.loc.y <= this.mass || this.loc.y >= height - this.mass) {
+        this.vel.y *= -0.9;
+      }
+      this.loc.x = constrain(this.loc.x, this.mass + hit, boundary -
+        this.mass);
+      this.loc.y = constrain(this.loc.y, this.mass, height - this.mass);
+    } else {
+      if (this.loc.x <= width - boundary + this.mass || this.loc.x >= width -
+        this.mass -
+        hit) {
+        this.vel.x *= -0.9;
+      }
+      if (this.loc.y <= this.mass || this.loc.y >= height - this.mass) {
+        this.vel.y *= -0.9;
+      }
+      this.loc.x = constrain(this.loc.x, width - boundary + this.mass, width -
+        this.mass -
+        hit);
+      this.loc.y = constrain(this.loc.y, this.mass, height - this.mass);
     }
-    if (this.loc.y <= this.mass + hit || this.loc.y >= height - this.mass -
-      hit) {
-      this.vel.y *= -0.9;
-    }
-    this.loc.x = constrain(this.loc.x, this.mass + hit, width - this.mass -
-      hit);
-    this.loc.y = constrain(this.loc.y, this.mass + hit, height - this.mass -
-      hit);
   };
 
   Ball.prototype.applyForce = function (force) {
@@ -96,7 +109,7 @@
 
   function Bullet(x, y, r, left) {
     this.left = left;
-    this.life = 24;
+    this.life = 40;
     this.loc = new PVector(x, y);
     if (this.left) {
       this.vel = new PVector(2, 0);
@@ -153,6 +166,7 @@
     this.preH = 0;
     this.me = false;
     this.size = size;
+    this.hit = 0;
 
     for (var j = 0; j < this.n; j++) {
       this.b.push(new Ball(x + cos(j * PI / this.n * 2) * size, y +
@@ -180,6 +194,7 @@
   };
 
   Mash.prototype.renew = function () {
+    var that = this;
     if (this.hurt) {
       this.counter++;
       if (this.counter > 1) {
@@ -187,14 +202,20 @@
         this.counter = 0;
       }
     }
+    if (this.hurt) {
+      this.hit += 0.6;
+    }
     this.b.forEach(function (item) {
-      item.update();
+      item.update(that.hit, that.left);
       item.render();
     });
     this.s.forEach(function (item) {
       item.connect();
       item.constrainLength();
     });
+  };
+
+  Mash.prototype.shoot = function () {
     for (var j = this.bullets.length - 1; j > -1; j--) {
       this.bullets[j].die();
       if (this.bullets[j].isDead) {
@@ -204,7 +225,7 @@
         this.bullets[j].show();
       }
     }
-  };
+  }
 
   Mash.prototype.getCenter = function () {
     var sumX = 0;
@@ -249,14 +270,16 @@
     var that = this;
     if (otherMash.bullets.length > 0) {
       otherMash.bullets.forEach(function (item) {
-        if (item.radius > 0) {
+        if (item.radius > 1) {
           var dis = PVector.sub(item.loc, that.center);
           var disL = dis.mag();
-          console.log(disL, that.size);
           if (disL < item.radius + that.size) {
             that.hurt = true;
+            var thick = map(item.radius, 0, 60, 0, 10);
+            that.hit += thick;
             var f = item.vel.mult(0.2);
             that.addF(f);
+            item.isDead = true;
           }
         }
       })
@@ -284,6 +307,7 @@
   exports.Ball = Ball;
   exports.Spring = Spring;
   exports.Mash = Mash;
-  exports.Bullet = Bullet;
+  exports.Bullet =
+    Bullet;
 
 })(this);
