@@ -4,6 +4,9 @@ html, body{
   background-color: #222;
   font-family: Arial, sans-serif;
 }
+body{
+  position: relative;
+}
 h1{
   color: white;
   width: 100px;
@@ -11,17 +14,53 @@ h1{
   margin: 10px auto;
 }
 canvas{
-  margin-top: 50px;
+  margin-top: 46px;
+  border: 1px black;
 }
 #intro{
-  display: block;
-  width: 460px;
-  margin: 640px auto 20px auto;
+  z-index: 2;
+  position:absolute;
+  width: 280px;
+  padding: 0 30px 10px 30px;
+  left: -10px;
+  top: 100px;
   color: white;
+  background-color: rgb(22, 198, 31);
+  opacity: 0.6;
   font-size: 14px;
 }
+#ok{
+  font-size: 14px;
+  color: green;
+  margin-left: 100px;
+  background-color: white;
+  cursor: pointer;
+}
+#pid{
+  font-size:18px;
+  display: block;
+  padding-top:10px;
+}
+#rid{
+  width:130px;
+}
+#connect{
+  font-size: 14px;
+  width:80px;
+  color: green;
+  margin-top: 10px;
+  background-color: white;
+  cursor: pointer;
+}
 #word{
+  z-index: 2;
+  position:absolute;
+  width: 170px;
+  padding: 20px 20px 10px 30px;
+  left: -10px;
+  top: 100px;
   color: white;
-  width: 270px;
-  margin: 10px auto;
+  background-color: rgb(22, 198, 31);
+  opacity: 0.6;
+  font-size: 14px;
 }

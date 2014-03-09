@@ -15,12 +15,23 @@
   </head>
   <body>
     <h1>NOISE</h1>
-    <span id="intro"> Scream to jump, Space to shoot, Scream and Space to shoot bigger</span>
+    <div id="intro">
+      <p>UP&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbspYour voice's pitch </p>
+      <p>LEFT / RIGHT&nbsp:&nbsp' < '&nbsp' > '</p>
+      <p>SHOOT&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp:&nbsp' Space ' and your volume</p>
+      <button id="ok">Play with my friend!</button>
+    </div>
     <div id="word">
-      Your PeerJS id is : <span id="pid"></span><br><br>
-      Connect to peer: <input type="text" id="rid" placeholder="Someone else's id">
+      Your ID &nbsp&nbsp&nbsp&nbsp&nbsp: <span id="pid"></span><br><br>
+      Connect to : <input type="text" id="rid" placeholder="Your friend's ID">
                        <input type="button" value="Connect" id="connect"><br><br>
     </div>
   </body>
+  <script type="text/javascript">
+    $("#ok").click(function () {
+      $("#word").show();
+      $("#intro").hide();
+    });
+  </script>
   <audio autoplay id="somebodyVoice"></audio>
 </html>

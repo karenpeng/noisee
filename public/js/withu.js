@@ -37,6 +37,12 @@
 
         switch (message.type) {
 
+        case 'colorData':
+          mashes[1].red = message.data.rr;
+          mashes[1].green = message.data.gg;
+          mashes[1].blue = message.data.bb;
+          break;
+
         case 'upData':
           mashes[1].goUp(message.data.hh);
           break;

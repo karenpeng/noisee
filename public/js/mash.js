@@ -48,12 +48,9 @@
     this.acc.add(f);
   };
 
-  Ball.prototype.render = function () {
+  Ball.prototype.render = function (r, g, b) {
     stroke(30);
-    fill(175);
-    if (this.dragging) {
-      fill(50);
-    }
+    fill(r, g, b);
     ellipse(this.loc.x, this.loc.y, this.mass * 2, this.mass * 2);
   };
 
@@ -109,7 +106,7 @@
 
   function Bullet(x, y, r, left) {
     this.left = left;
-    this.life = 40;
+    this.life = 36;
     this.loc = new PVector(x, y);
     if (this.left) {
       this.vel = new PVector(2, 0);
@@ -166,6 +163,9 @@
     this.preH = 0;
     this.me = false;
     this.size = size;
+    this.red = random(30, 150);
+    this.green = random(30, 150);
+    this.blue = random(30, 150);
     this.hit = 0;
 
     for (var j = 0; j < this.n; j++) {
@@ -207,7 +207,7 @@
     }
     this.b.forEach(function (item) {
       item.update(that.hit, that.left);
-      item.render();
+      item.render(that.red + 100, that.green + 100, that.blue + 100);
     });
     this.s.forEach(function (item) {
       item.connect();
@@ -270,12 +270,13 @@
     var that = this;
     if (otherMash.bullets.length > 0) {
       otherMash.bullets.forEach(function (item) {
-        if (item.radius > 1) {
+        if (item.radius > 0.5) {
           var dis = PVector.sub(item.loc, that.center);
           var disL = dis.mag();
           if (disL < item.radius + that.size) {
             that.hurt = true;
-            var thick = map(item.radius, 0, 60, 0, 10);
+            //var thick = map(item.radius, 0, 60, 0, 200);
+            var thick = map(item.radius, 0, 60, 0, 14);
             that.hit += thick;
             var f = item.vel.mult(0.2);
             that.addF(f);
@@ -289,7 +290,7 @@
   Mash.prototype.show = function () {
     stroke(30);
     if (!this.hurt) {
-      fill(100);
+      fill(this.red, this.green, this.blue);
     } else {
       fill(250);
     }
