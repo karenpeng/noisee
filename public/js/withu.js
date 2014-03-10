@@ -3,7 +3,8 @@
   var c;
   exports.connections = null;
   exports.mediaStream = null;
-  exports.connectAlready = false;
+  exports.myConnectAlready = false;
+  exports.hisConnectAlready = false;
   var hisVoice;
   var readyCallback = function () {};
 
@@ -30,12 +31,22 @@
   function onConnection() {
     exports.connections.on('open', function () {
 
-      exports.connectAlready = true;
+      myConnectAlready = true;
+      var connectData = {
+        connectInit: true
+      };
+      sendWithType('connectData', connectData);
+
+      //exports.connectAlready = true;
       reStart();
 
       exports.connections.on('data', function (message) {
 
         switch (message.type) {
+
+        case 'connectData':
+          exports.hisConnectAlready = true;
+          break;
 
         case 'colorData':
           mashes[1].red = message.data.rr;

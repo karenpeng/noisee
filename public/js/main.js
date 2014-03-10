@@ -40,7 +40,7 @@
     green = mashes[0].green;
     blue = mashes[0].blue;
 
-    userPitch = new getUserValue(100, 200);
+    userPitch = new getUserValue(100, 220);
     userVolume = new getUserValue(130, 134);
   };
 
@@ -97,7 +97,7 @@
     });
     mashes[0].goUp(mapPitch(pitchDetector.pitch));
 
-    if (connectAlready) {
+    if (myConnectAlready && hisConnectAlready) {
       connectCount++;
     }
 
@@ -113,6 +113,9 @@
         }
       });
     }
+    textSize(60);
+    fill(0);
+    text(connectCount, 50, 50);
   };
 
   function mapPitch(input) {
@@ -123,7 +126,7 @@
       var pitchResult = userPitch.update(input);
       pitch = map(input, pitchResult.mininmum, pitchResult.maxinmum * 0.6, 0,
         76);
-      console.log(pitchResult.mininmum, pitchResult.maxinmum * 0.6);
+      //console.log(pitchResult.mininmum, pitchResult.maxinmum * 0.6);
     }
     pitch = constrain(pitch, 0, 80);
     return pitch;
@@ -131,15 +134,16 @@
 
   function mapVolume(input) {
     var volume;
-    if (input < 120 || input > 140 || input === undefined) {
+    if (input < 110 || input > 140 || input === undefined) {
       volume = 0;
     } else {
       var volumeResult = userVolume.update(input);
-      volume = map(input, volumeResult.mininmum + 1.5, volumeResult.maxinmum,
+      volume = map(input, volumeResult.mininmum + 1, volumeResult.maxinmum,
         0,
         60);
+      console.log(volumeResult.mininmum + 1, volumeResult.maxinmum);
     }
-    volume = constrain(volume, 0, 70);
+    volume = constrain(volume, 0, 60);
     return volume;
   }
 
@@ -190,7 +194,7 @@
           .y,
           r, mashes[0].left));
 
-        if (connectAlready) {
+        if (myConnectAlready && hisConnectAlready) {
           var bulletInfo = {
             bulletX: mashes[0].center.x,
             bulletY: mashes[0].center.y,
@@ -207,7 +211,7 @@
     //event.preventDefault();
     if (event.which === 37 && !over) {
       mashes[0].addF(left);
-      if (connectAlready) {
+      if (myConnectAlready && hisConnectAlready) {
         var leftData = {
           left: true
         };
@@ -220,7 +224,7 @@
     //event.preventDefault();
     if (event.which === 39 && !over) {
       mashes[0].addF(right);
-      if (connectAlready) {
+      if (myConnectAlready && hisConnectAlready) {
         var rightData = {
           right: true
         };

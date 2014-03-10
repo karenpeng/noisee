@@ -20,7 +20,7 @@ canvas{
 #intro{
   z-index: 2;
   position:absolute;
-  width: 280px;
+  width: 200px;
   padding: 0 30px 10px 30px;
   left: -10px;
   top: 100px;
@@ -32,7 +32,7 @@ canvas{
 #ok{
   font-size: 14px;
   color: green;
-  margin-left: 100px;
+  margin: 0 0 6px 60px;
   background-color: white;
   cursor: pointer;
 }
