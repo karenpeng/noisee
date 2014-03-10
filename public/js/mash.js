@@ -106,7 +106,7 @@
 
   function Bullet(x, y, r, left) {
     this.left = left;
-    this.life = 36;
+    this.life = 24;
     this.loc = new PVector(x, y);
     if (this.left) {
       this.vel = new PVector(2, 0);
@@ -225,7 +225,7 @@
         this.bullets[j].show();
       }
     }
-  }
+  };
 
   Mash.prototype.getCenter = function () {
     var sumX = 0;
@@ -276,7 +276,8 @@
           if (disL < item.radius + that.size) {
             that.hurt = true;
             //var thick = map(item.radius, 0, 60, 0, 200);
-            var thick = map(item.radius, 0, 60, 0, 14);
+            var thick = map(item.radius, 0, 70, 0, 14);
+            thick = constrain(thick, 0, 16);
             that.hit += thick;
             var f = item.vel.mult(0.2);
             that.addF(f);
@@ -294,21 +295,36 @@
     } else {
       fill(250);
     }
-    //noFill();
     beginShape();
-    //curveVertex(0, 0);
     for (var k = 0; k < this.n; k++) {
-      //curveVertex(this.b[j].loc.x, this.b[j].loc.y);
       vertex(this.b[k].loc.x, this.b[k].loc.y);
     }
-    //curveVertex(0, 0);
     endShape(CLOSE);
+  };
+
+  //////////////////////////////////////////////////////////////
+  function getUserValue(a, b) {
+    this.min = a;
+    this.max = b;
+  }
+
+  getUserValue.prototype.update = function (input) {
+    if (this.min > input) {
+      this.min = input;
+    }
+    if (this.max < input) {
+      this.max = input;
+    }
+    return {
+      mininmum: this.min,
+      maxinmum: this.max
+    };
   };
 
   exports.Ball = Ball;
   exports.Spring = Spring;
   exports.Mash = Mash;
-  exports.Bullet =
-    Bullet;
+  exports.Bullet = Bullet;
+  exports.getUserValue = getUserValue;
 
 })(this);

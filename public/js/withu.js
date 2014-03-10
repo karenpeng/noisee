@@ -69,8 +69,10 @@
     });
 
     exports.connections.on('close', function () {
-      mashes.splice(1, 1);
-      alert("You're left alone T_T...");
+      if (!over) {
+        mashes.splice(1, 1);
+        alert("You're left alone T_T...");
+      }
     });
 
   }

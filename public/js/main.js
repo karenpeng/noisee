@@ -3,15 +3,13 @@
   var gravity = new PVector(0, 7);
   var left = new PVector(-50, 0);
   var right = new PVector(50, 0);
-  var threshold;
-  var invisibleSpring;
-  var counter;
   var mashes = [];
   var connectCount;
   var red = 0;
   var green = 0;
   var blue = 0;
-  var over = false;
+  exports.over = false;
+  var userPitch, userVolume;
   exports.iAmInit;
 
   function beCenter(w, selector) {
@@ -23,12 +21,12 @@
   }
 
   exports.setup = function () {
+    $("#word").hide();
+    $("#intro").show();
     createGraphics(1100, 600);
     beCenter(width, "canvas");
     beCenter(width, "#intro");
     beCenter(width, "#word");
-    $("#word").hide();
-    $("#intro").show();
     exports.width = width;
     exports.iAmInit = false;
     exports.boundary = width;
@@ -41,9 +39,9 @@
     red = mashes[0].red;
     green = mashes[0].green;
     blue = mashes[0].blue;
-    invisible = 30;
-    invisibleSpring = [];
-    counter = 0;
+
+    userPitch = new getUserValue(100, 200);
+    userVolume = new getUserValue(130, 134);
   };
 
   exports.reStart = function () {
@@ -103,63 +101,13 @@
       connectCount++;
     }
 
-    /*
-  mash.b.forEach(function (item) {
-    jumper.b.forEach(function (key) {
-      var sub = PVector.sub(item.loc, key.loc);
-      var dis = sub.mag();
-      if (!item.check && !key.check && dis < invisible && abs(item.loc.x -
-        key.loc.x) < 10) {
-        invisibleSpring.push(new Spring(item, key));
-        item.check = true;
-        key.check = true;
-      }
-    });
-  });
-*/
-    /*
-  for (var j = 0; j < mash.b.length; j++) {
-    for (var k = 0; k < jumper.b.length; k++) {
-      var sub = PVector.sub(mash.b[j].loc, jumper.b[k].loc);
-      var dis = sub.mag();
-      if (!mash.b[j].check && !jumper.b[k].check && dis <= invisible && abs(
-        mash
-        .b[j].loc.x -
-        jumper.b[k].loc.x) < 10) {
-        invisibleSpring.push(new Spring(mash.b[j], jumper.b[k]));
-        mash.b[j].check = true;
-        jumper.b[k].check = true;
-        invisibleSpring[counter].b1Num = j;
-        invisibleSpring[counter].b2Num = k;
-        invisibleSpring[counter].max *= 0.8;
-        invisibleSpring[counter].min *= 1.2;
-        counter++;
-      }
-    }
-  }
-  */
-    /*
-  //for (var i = invisibleSpring.length - 1; i > -1; i--) {
-  for (var i = 0; i < invisibleSpring.length; i++) {
-    invisibleSpring[i].connect();
-    invisibleSpring[i].displayLine();
-    invisibleSpring[i].constrainLength();
-    var sub1 = PVector.sub(invisibleSpring[i].b1.loc, invisibleSpring[i].b2.loc);
-    var dis1 = sub1.mag();
-    if (dis1 > invisible) {
-      mash.b[invisibleSpring[i].b1Num].check = false;
-      jumper.b[invisibleSpring[i].b2Num].check = false;
-      invisibleSpring.splice(i, 1);
-    }
-  }
-*/
     if (mashes.length > 1) {
       mashes[0].check(mashes[1]);
       mashes[1].check(mashes[0]);
       drawBoundary();
       gameOver();
       mashes.forEach(function (item) {
-        if (item.me && connectCount <= 100) {
+        if (item.me && connectCount <= 80) {
           fill(255);
           text("YOU", item.center.x - 10, item.center.y);
         }
@@ -169,23 +117,29 @@
 
   function mapPitch(input) {
     var pitch;
-    if (input < 10 || input > 1000) {
+    if (input < 10 || input > 1000 || input === undefined) {
       pitch = 0;
     } else {
-      pitch = map(input, 40, 700, 0, 55);
-      pitch = constrain(pitch, 0, 60);
+      var pitchResult = userPitch.update(input);
+      pitch = map(input, pitchResult.mininmum, pitchResult.maxinmum, 0,
+        55);
     }
+    pitch = constrain(pitch, 0, 60);
     return pitch;
   }
 
   function mapVolume(input) {
     var volume;
-    if (input < 127 || input > 140) {
+    if (input < 110 || input > 170 || input === undefined) {
       volume = 0;
     } else {
-      volume = map(input, 127.5, 140, 0, 70);
-      volume = constrain(volume, 0, 100);
+      var volumeResult = userVolume.update(input);
+      volume = map(input, volumeResult.mininmum + 1.5, volumeResult.maxinmum,
+        0,
+        70);
+      console.log(volumeResult.mininmum + 1.5, volumeResult.maxinmum);
     }
+    volume = constrain(volume, 0, 100);
     return volume;
   }
 
@@ -205,15 +159,15 @@
     mashes.forEach(function (item) {
       if (item.hit >= width / 2 - 20) {
         textSize(60);
+        fill(246, 10, 10);
+        noStroke();
         if (item.me) {
-          fill(255);
           if (item.center.x > width / 2) {
-            text("YOU LOSE", width - 360, height / 2);
+            text("YOU LOSE", width - 420, height / 2);
           } else {
             text("YOU LOSE", 100, height / 2);
           }
         } else {
-          fill(0);
           if (item.center.x > width / 2) {
             text("YOU WIN", 140, height / 2);
           } else {
@@ -221,7 +175,7 @@
           }
         }
         noLoop();
-        over = true;
+        exports.over = true;
       }
     })
   }
