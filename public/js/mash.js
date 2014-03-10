@@ -250,7 +250,7 @@
 
   Mash.prototype.goUp = function (h) {
     h = Math.floor(h);
-    if (abs(h - this.preH) > 2) {
+    if (abs(h - this.preH) > 1) {
       var up = new PVector(0, -h);
       this.addF(up);
       this.up = true;
@@ -276,7 +276,7 @@
           if (disL < item.radius + that.size) {
             that.hurt = true;
             //var thick = map(item.radius, 0, 60, 0, 200);
-            var thick = map(item.radius, 0, 70, 0, 14);
+            var thick = map(item.radius, 0, 60, 0, 14);
             thick = constrain(thick, 0, 16);
             that.hit += thick;
             var f = item.vel.mult(0.2);

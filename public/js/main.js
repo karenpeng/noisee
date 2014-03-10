@@ -117,29 +117,29 @@
 
   function mapPitch(input) {
     var pitch;
-    if (input < 10 || input > 1000 || input === undefined) {
+    if (input < 50 || input > 700 || input === undefined) {
       pitch = 0;
     } else {
       var pitchResult = userPitch.update(input);
-      pitch = map(input, pitchResult.mininmum, pitchResult.maxinmum, 0,
-        55);
+      pitch = map(input, pitchResult.mininmum, pitchResult.maxinmum * 0.6, 0,
+        76);
+      console.log(pitchResult.mininmum, pitchResult.maxinmum * 0.6);
     }
-    pitch = constrain(pitch, 0, 60);
+    pitch = constrain(pitch, 0, 80);
     return pitch;
   }
 
   function mapVolume(input) {
     var volume;
-    if (input < 110 || input > 170 || input === undefined) {
+    if (input < 120 || input > 140 || input === undefined) {
       volume = 0;
     } else {
       var volumeResult = userVolume.update(input);
       volume = map(input, volumeResult.mininmum + 1.5, volumeResult.maxinmum,
         0,
-        70);
-      console.log(volumeResult.mininmum + 1.5, volumeResult.maxinmum);
+        60);
     }
-    volume = constrain(volume, 0, 100);
+    volume = constrain(volume, 0, 70);
     return volume;
   }
 
