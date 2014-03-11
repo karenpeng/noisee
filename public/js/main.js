@@ -260,27 +260,31 @@
   });
 
   $(window).keydown(function (event) {
-    //event.preventDefault();
-    if (event.which === 37 && !over && animate) {
-      mashes[0].addF(left);
-      if (myConnectAlready && hisConnectAlready) {
-        var leftData = {
-          left: true
-        };
-        sendWithType('leftData', leftData);
+    if (event.which === 37) {
+      event.preventDefault();
+      if (!over && animate) {
+        mashes[0].addF(left);
+        if (myConnectAlready && hisConnectAlready) {
+          var leftData = {
+            left: true
+          };
+          sendWithType('leftData', leftData);
+        }
       }
     }
   });
 
   $(window).keydown(function (event) {
-    //event.preventDefault();
-    if (event.which === 39 && !over && animate) {
-      mashes[0].addF(right);
-      if (myConnectAlready && hisConnectAlready) {
-        var rightData = {
-          right: true
-        };
-        sendWithType('rightData', rightData);
+    if (event.which === 39) {
+      event.preventDefault();
+      if (!over && animate) {
+        mashes[0].addF(right);
+        if (myConnectAlready && hisConnectAlready) {
+          var rightData = {
+            right: true
+          };
+          sendWithType('rightData', rightData);
+        }
       }
     }
   });
