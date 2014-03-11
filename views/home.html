@@ -4,34 +4,49 @@
     <meta charset = "utf-8" />
     <title>NOISE</title>
     <link rel="stylesheet" type="text/css" href="/public/css/noise.css"/>
-    <script type="text/javascript" src ="http://cdn.peerjs.com/0.3/peer.min.js"></script>
     <script type="text/javascript" src ="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-    <script type="text/javascript" src ="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
-    <script type="text/javascript" src ="/public/js/pitchdetect.js"></script>
-    <script type="text/javascript" src ="/public/js/withu.js"></script>
-    <script type="text/javascript" src ="http://karenlabs.com/lib/p5.js"></script>
-    <script type="text/javascript" src ="/public/js/main.js"></script>
-    <script type="text/javascript" src ="/public/js/mash.js"></script>
   </head>
   <body>
     <h1>NOISE</h1>
     <div id="intro">
-      <p>Your Pitch &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: jump</p>
-      <p>◀ ▶ &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: walk</p>
-      <p>Space + Your Volume : shoot</p>
+      <p>Your Pitch &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: Jump</p>
+      <p>Space + Your Volume : Shoot</p>
+      <p>◀ ▶ &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: Walk</p>
       <button id="ok">Play with friend!</button>
     </div>
     <div id="word">
-      Your ID &nbsp&nbsp&nbsp&nbsp&nbsp: <span id="pid"></span><br><br>
+      Your ID : <span id="pid"></span>
       <input type="text" id="rid" placeholder="Your friend's ID">
-      <input type="button" value="Connect" id="connect"><br><br>
+      <input type="button" value="Connect" id="connect">
     </div>
+    <p id="countDown">Better Use <img id="headphone" src ="/public/image/headphone.png"/>
+    </p>
   </body>
+  <script type="text/javascript" src ="http://karenlabs.com/lib/p5.js"></script>
+  <script type="text/javascript" src ="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
+  <script type="text/javascript" src ="/public/js/pitchdetect.js"></script>
+  <script type="text/javascript" src ="http://cdn.peerjs.com/0.3/peer.min.js"></script>
+  <script type="text/javascript" src ="/public/js/withu.js"></script>
+  <script type="text/javascript" src ="/public/js/mash.js"></script>
+  <script type="text/javascript" src ="/public/js/main.js"></script>
   <script type="text/javascript">
     $("#ok").click(function () {
       $("#word").show();
       $("#intro").hide();
     });
   </script>
+<!-- AddThis Smart Layers BEGIN -->
+<!-- Go to http://www.addthis.com/get/smart-layers to customize -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-531eadc26a822eb1"></script>
+<script type="text/javascript">
+  addthis.layers({
+    'theme' : 'transparent',
+    'share' : {
+      'position' : 'right',
+      'numPreferredServices' : 4
+    }
+  });
+</script>
+<!-- AddThis Smart Layers END -->
   <audio autoplay id="somebodyVoice"></audio>
 </html>

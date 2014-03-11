@@ -26,7 +26,7 @@ canvas{
   top: 100px;
   color: white;
   background-color: rgb(22, 198, 31);
-  opacity: 0.6;
+  opacity: 0.7;
   font-size: 14px;
 }
 #ok{
@@ -39,7 +39,7 @@ canvas{
 #pid{
   font-size:18px;
   display: block;
-  padding-top:10px;
+  margin:10px 0;
 }
 #rid{
   width:146px;
@@ -61,6 +61,22 @@ canvas{
   top: 100px;
   color: white;
   background-color: rgb(22, 198, 31);
-  opacity: 0.6;
+  opacity: 0.7;
   font-size: 14px;
+}
+#countDown{
+  z-index: 2;
+  position:absolute;
+  width: 160px;
+  left: 50%;
+  margin-left: -80px;
+  top: 200px;
+  color: black;
+  font-size: 18px;
+}
+#fork{
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: 0;
 }

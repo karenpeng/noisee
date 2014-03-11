@@ -106,7 +106,7 @@
 
   function Bullet(x, y, r, left) {
     this.left = left;
-    this.life = 24;
+    this.life = 30;
     this.loc = new PVector(x, y);
     if (this.left) {
       this.vel = new PVector(2, 0);
@@ -122,6 +122,7 @@
 
   Bullet.prototype.update = function () {
     this.life--;
+    this.radius -= 0.2;
     this.loc.add(this.vel);
     this.vel.add(this.acc);
   };

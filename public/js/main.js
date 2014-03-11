@@ -1,6 +1,6 @@
 (function (exports) {
 
-  var gravity = new PVector(0, 7);
+  var gravity = new PVector(0, 8);
   var left = new PVector(-50, 0);
   var right = new PVector(50, 0);
   var mashes = [];
@@ -11,6 +11,7 @@
   exports.over = false;
   var userPitch, userVolume;
   exports.iAmInit;
+  var animate = true;
 
   function beCenter(w, selector) {
     var windowWidth = window.innerWidth;
@@ -22,6 +23,7 @@
 
   exports.setup = function () {
     $("#word").hide();
+    $("#countDown").hide();
     $("#intro").show();
     createGraphics(1100, 600);
     beCenter(width, "canvas");
@@ -41,12 +43,46 @@
     blue = mashes[0].blue;
 
     userPitch = new getUserValue(100, 220);
-    userVolume = new getUserValue(130, 134);
+    userVolume = new getUserValue(128, 133);
   };
 
   exports.reStart = function () {
+    animate = false;
     $("#word").hide();
     mashes = [];
+    $("#countDown").fadeIn();
+    setTimeout(
+      function () {
+        //nothing
+      }, 2000);
+    setTimeout(
+      function () {
+        $("#countDown").css("font-size", "60px");
+        $("#countDown").css("text-align", "center");
+        $("#countDown").html(5);
+      }, 3000);
+    setTimeout(
+      function () {
+        $("#countDown").html(4);
+      }, 4000);
+    setTimeout(
+      function () {
+        $("#countDown").html(3);
+      }, 5000);
+    setTimeout(
+      function () {
+        $("#countDown").html(2);
+      }, 6000);
+    setTimeout(
+      function () {
+        $("#countDown").html(1);
+      }, 7000);
+    setTimeout(
+      function () {
+        $("#countDown").fadeOut();
+        animate = true;
+      }, 8000);
+
     if (exports.iAmInit) {
       mashes[0] = new Mash(19, 4, 50, width / 6, height / 4);
       mashes[0].red = red;
@@ -82,6 +118,14 @@
     });
 
     background(255);
+
+    for (var i = 20; i < width; i += 30) {
+      for (var j = 20; j < height; j += 30) {
+        noStroke();
+        fill(250);
+        rect(i, j, 10, 10);
+      }
+    }
     if (mashes.length > 1) {
       stroke(0);
       line(width / 2, 0, width / 2, height);
@@ -95,7 +139,9 @@
         item.addF(gravity);
       }
     });
-    mashes[0].goUp(mapPitch(pitchDetector.pitch));
+    if (animate) {
+      mashes[0].goUp(mapPitch(pitchDetector.pitch));
+    }
 
     if (myConnectAlready && hisConnectAlready) {
       connectCount++;
@@ -113,9 +159,9 @@
         }
       });
     }
-    textSize(60);
-    fill(0);
-    text(connectCount, 50, 50);
+    // textSize(60);
+    // fill(0);
+    // text(connectCount, 50, 50);
   };
 
   function mapPitch(input) {
@@ -125,25 +171,31 @@
     } else {
       var pitchResult = userPitch.update(input);
       pitch = map(input, pitchResult.mininmum, pitchResult.maxinmum * 0.6, 0,
-        76);
+        86);
       //console.log(pitchResult.mininmum, pitchResult.maxinmum * 0.6);
     }
-    pitch = constrain(pitch, 0, 80);
+    pitch = constrain(pitch, 0, 90);
     return pitch;
   }
 
   function mapVolume(input) {
     var volume;
-    if (input < 110 || input > 140 || input === undefined) {
+    if (input < 120 || input > 140 || input === undefined) {
       volume = 0;
     } else {
       var volumeResult = userVolume.update(input);
-      volume = map(input, volumeResult.mininmum + 1, volumeResult.maxinmum,
-        0,
-        60);
-      console.log(volumeResult.mininmum + 1, volumeResult.maxinmum);
+      if (connectCount > 400) {
+        volume = map(input, volumeResult.mininmum + 1.5, volumeResult.maxinmum,
+          0,
+          30);
+      } else {
+        volume = map(input, volumeResult.mininmum + 1, volumeResult.maxinmum,
+          0,
+          37);
+      }
+      console.log(volume);
     }
-    volume = constrain(volume, 0, 60);
+    volume = constrain(volume, 0, 50);
     return volume;
   }
 
@@ -188,7 +240,7 @@
   $(window).keydown(function (event) {
     //event.preventDefault();
     if (event.which === 32) {
-      if (!mashes[0].hurt && !over) {
+      if (!mashes[0].hurt && !over && animate) {
         var r = mapVolume(pitchDetector.volume);
         mashes[0].bullets.push(new Bullet(mashes[0].center.x, mashes[0].center
           .y,
@@ -209,7 +261,7 @@
 
   $(window).keydown(function (event) {
     //event.preventDefault();
-    if (event.which === 37 && !over) {
+    if (event.which === 37 && !over && animate) {
       mashes[0].addF(left);
       if (myConnectAlready && hisConnectAlready) {
         var leftData = {
@@ -222,7 +274,7 @@
 
   $(window).keydown(function (event) {
     //event.preventDefault();
-    if (event.which === 39 && !over) {
+    if (event.which === 39 && !over && animate) {
       mashes[0].addF(right);
       if (myConnectAlready && hisConnectAlready) {
         var rightData = {
