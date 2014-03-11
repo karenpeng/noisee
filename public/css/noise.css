@@ -77,6 +77,8 @@ canvas{
 #fork{
   position: absolute;
   z-index: 2;
-  right: 0;
-  top: 0;
+  top:0;
+  right:0;
+  margin-top: -40px;
+  margin-right: -48px;
 }

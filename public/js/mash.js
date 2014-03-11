@@ -271,7 +271,7 @@
     var that = this;
     if (otherMash.bullets.length > 0) {
       otherMash.bullets.forEach(function (item) {
-        if (item.radius > 0.5) {
+        if (item.radius > 0.3) {
           var dis = PVector.sub(item.loc, that.center);
           var disL = dis.mag();
           if (disL < item.radius + that.size) {

@@ -184,12 +184,12 @@
       volume = 0;
     } else {
       var volumeResult = userVolume.update(input);
-      if (connectCount > 400) {
-        volume = map(input, volumeResult.mininmum + 1.5, volumeResult.maxinmum,
-          0,
-          30);
-      } else {
+      if (connectCount > 500) {
         volume = map(input, volumeResult.mininmum + 1, volumeResult.maxinmum,
+          0,
+          22);
+      } else {
+        volume = map(input, volumeResult.mininmum, volumeResult.maxinmum,
           0,
           37);
       }
