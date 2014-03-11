@@ -187,7 +187,7 @@
       if (connectCount > 500) {
         volume = map(input, volumeResult.mininmum + 1, volumeResult.maxinmum,
           0,
-          22);
+          25);
       } else {
         volume = map(input, volumeResult.mininmum, volumeResult.maxinmum,
           0,
@@ -195,7 +195,7 @@
       }
       console.log(volume);
     }
-    volume = constrain(volume, 0, 50);
+    volume = constrain(volume, 0, 55);
     return volume;
   }
 

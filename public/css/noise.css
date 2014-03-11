@@ -8,13 +8,15 @@ body{
   position: relative;
 }
 h1{
+  display: none;
   color: white;
   width: 100px;
   height:40px;
   margin: 10px auto;
 }
 canvas{
-  margin-top: 46px;
+  margin-top: 50px;
+  margin-bottom: 50px;
   border: 1px black;
 }
 #intro{
@@ -26,7 +28,7 @@ canvas{
   top: 100px;
   color: white;
   background-color: rgb(22, 198, 31);
-  opacity: 0.7;
+  opacity: 0.6;
   font-size: 14px;
 }
 #ok{
@@ -61,7 +63,7 @@ canvas{
   top: 100px;
   color: white;
   background-color: rgb(22, 198, 31);
-  opacity: 0.7;
+  opacity: 0.6;
   font-size: 14px;
 }
 #countDown{
@@ -79,6 +81,9 @@ canvas{
   z-index: 2;
   top:0;
   right:0;
-  margin-top: -40px;
-  margin-right: -48px;
+  margin-top: -36px;
+  margin-right: -40px;
+}
+#fork:hover{
+  cursor: pointer;
 }

@@ -164,9 +164,9 @@
     this.preH = 0;
     this.me = false;
     this.size = size;
-    this.red = random(30, 150);
-    this.green = random(30, 150);
-    this.blue = random(30, 150);
+    this.red = random(50, 150);
+    this.green = random(50, 150);
+    this.blue = random(50, 150);
     this.hit = 0;
 
     for (var j = 0; j < this.n; j++) {
