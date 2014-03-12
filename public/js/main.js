@@ -12,6 +12,7 @@
   var userPitch, userVolume;
   exports.iAmInit;
   var animate = true;
+  var resultComeOut = false;
 
   function beCenter(w, selector) {
     var windowWidth = window.innerWidth;
@@ -120,7 +121,7 @@
       drawBoundary();
       gameOver();
       mashes.forEach(function (item) {
-        if (item.me && connectCount <= 140) {
+        if (item.me && !animate) {
           fill(255);
           text("YOU", item.center.x - 10, item.center.y);
         }
@@ -190,44 +191,68 @@
   }
 
   function gameOver() {
-    if (!exports.over) {
+    if (exports.over) {
+      resultComeOut = true;
       textSize(60);
       fill(246, 10, 10);
       noStroke();
-      if (item.me) {
-        if (item.center.x > width / 2) {
+      if (mashes[0].score < mashes[1].score) {
+        if (mashes[0].center.x > width / 2) {
           text("YOU LOSE", width - 420, height / 2);
         } else {
           text("YOU LOSE", 100, height / 2);
         }
       } else {
-        if (item.center.x > width / 2) {
+        if (mashes[0].center.x < width / 2) {
           text("YOU WIN", 140, height / 2);
         } else {
           text("YOU WIN", width - 400, height / 2);
         }
       }
       noLoop();
-      exports.over = true;
-      setTimeout(function () {}, 2000);
-      setTimeout(function () {
-        $("#cover").show();
-        $("#again").show();
-        $("#again").click(function () {
-          location.reload();
-        });
-      }, 2100);
-    } else {
-      mashes.forEach(function (item) {
-        if (item.hit >= width / 2 - 20) {
-          exports.over = true;
-          var overData = {
-            overMsg: true
-          };
-          sendWithType("overData", overData);
-        }
-      });
+      playAgain();
     }
+    mashes.forEach(function (item) {
+      if (item.hit >= width / 2 - 20) {
+        textSize(60);
+        fill(246, 10, 10);
+        noStroke();
+        if (!resultComeOut) {
+          if (item.me) {
+            if (item.center.x > width / 2) {
+              text("YOU LOSE", width - 420, height / 2);
+            } else {
+              text("YOU LOSE", 100, height / 2);
+            }
+          } else {
+            if (item.center.x < width / 2) {
+              text("YOU WIN", 140, height / 2);
+            } else {
+              text("YOU WIN", width - 400, height / 2);
+            }
+          }
+          resultComeOut = true;
+        }
+        noLoop();
+        playAgain();
+        exports.over = true;
+        var overData = {
+          overOverOver: true
+        };
+        sendWithType("overData", overData);
+      }
+    })
+  }
+
+  function playAgain() {
+    setTimeout(function () {}, 2000);
+    setTimeout(function () {
+      $("#cover").show();
+      $("#again").show();
+      $("#again").click(function () {
+        location.reload();
+      });
+    }, 2400);
   }
 
   function countingDown() {

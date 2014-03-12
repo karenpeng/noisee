@@ -279,7 +279,7 @@
             hh: he
           };
           sendWithType('upData', upData);
-          console.log(he);
+          //console.log(he);
         }
       } else {
         this.up = false;
@@ -290,13 +290,13 @@
         var antiGravity = new PVector(0, -8);
         this.addF(up2);
         this.addF(antiGravity);
-        console.log(h);
+        //console.log(h);
       }
     }
   };
 
   Mash.prototype.check = function (otherMash) {
-    var that = this;
+    var that = this
     if (otherMash.bullets.length > 0) {
       otherMash.bullets.forEach(function (item) {
         if (item.radius > 0.2) {
@@ -304,10 +304,10 @@
           var disL = dis.mag();
           if (disL < item.radius + that.size) {
             that.hurt = true;
-            var thick = map(item.radius, 0, 60, 0, 16);
-            thick = constrain(thick, 0, 20);
-            // var thick = map(item.radius, 0, 60, 0, 100);
-            // thick = constrain(thick, 0, 100);
+            // var thick = map(item.radius, 0, 60, 0, 16);
+            // thick = constrain(thick, 0, 20);
+            var thick = map(item.radius, 0, 60, 0, 100);
+            thick = constrain(thick, 0, 100);
             that.hit += thick;
             //otherMash.score++;
             var f = item.vel.mult(0.2);
