@@ -190,7 +190,7 @@
   }
 
   function gameOver() {
-    if (exports.over) {
+    if (!exports.over) {
       textSize(60);
       fill(246, 10, 10);
       noStroke();
