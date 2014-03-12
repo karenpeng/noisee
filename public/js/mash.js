@@ -305,7 +305,7 @@
           if (disL < item.radius + that.size) {
             that.hurt = true;
             var thick = map(item.radius, 0, 60, 0, 18);
-            thick = constrain(thick, 0, 22);
+            thick = constrain(thick, 0, 20);
             // var thick = map(item.radius, 0, 60, 0, 100);
             // thick = constrain(thick, 0, 100);
             that.hit += thick;
