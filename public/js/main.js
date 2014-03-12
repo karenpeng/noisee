@@ -22,9 +22,6 @@
   }
 
   exports.setup = function () {
-    $("#word").hide();
-    $("#countDown").hide();
-    $("#intro").show();
     createGraphics(1100, 600);
     beCenter(width, "canvas");
     beCenter(width, "#intro");
@@ -243,6 +240,14 @@
         }
         noLoop();
         exports.over = true;
+        setTimeout(function () {}, 2000);
+        setTimeout(function () {
+          $("#cover").show();
+          $("#again").show();
+          $("#again").click(function () {
+            location.reload();
+          });
+        }, 2400);
       }
     })
   }
@@ -251,7 +256,7 @@
   $(window).keydown(function (event) {
     //event.preventDefault();
     if (event.which === 32) {
-      if (!mashes[0].hurt && !over && animate) {
+      if (!mashes[0].hurt && animate) {
         var r = mapVolume(pitchDetector.volume);
         mashes[0].bullets.push(new Bullet(mashes[0].center.x, mashes[0].center
           .y,
@@ -273,7 +278,7 @@
   $(window).keydown(function (event) {
     if (event.which === 37) {
       event.preventDefault();
-      if (!over && animate) {
+      if (animate) {
         mashes[0].addF(left);
         if (myConnectAlready && hisConnectAlready) {
           var leftData = {
@@ -288,7 +293,7 @@
   $(window).keydown(function (event) {
     if (event.which === 39) {
       event.preventDefault();
-      if (!over && animate) {
+      if (animate) {
         mashes[0].addF(right);
         if (myConnectAlready && hisConnectAlready) {
           var rightData = {
