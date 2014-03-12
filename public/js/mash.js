@@ -162,7 +162,7 @@
     this.hurt = false;
     this.counter = 0;
     this.preH = 0;
-    this.me = false;
+    this.me = true;
     this.size = size;
     this.red = random(80, 150);
     this.green = random(80, 150);
@@ -251,20 +251,47 @@
   };
 
   Mash.prototype.goUp = function (h) {
-    h = Math.floor(h);
-    if (abs(h - this.preH) > 1) {
-      var up = new PVector(0, -h);
-      this.addF(up);
-      this.up = true;
-      this.preH = h;
+    // var he = Math.floor(h);
+    // if (abs(he - this.preH) > 2) {
+    //   var up = new PVector(0, -he);
+    //   this.addF(up);
+    //   this.up = true;
+    //   this.preH = he;
+    // } else {
+    //   this.up = false;
+    // }
+    // if (this.me && pitchDetector.turnOn) {
+    //   var upData = {
+    //     hh: he
+    //   };
+    //   sendWithType('upData', upData);
+    //   console.log(he);
+    // }
+    if (this.me) {
+      var he = Math.floor(h);
+      if (abs(he - this.preH) > 2) {
+        var up = new PVector(0, -he);
+        this.up = true;
+        this.addF(up);
+        this.preH = he;
+        if (pitchDetector.turnOn && hisConnectAlready && myConnectAlready) {
+          var upData = {
+            hh: he
+          };
+          sendWithType('upData', upData);
+          console.log(he);
+        }
+      } else {
+        this.up = false;
+      }
     } else {
-      this.up = false;
-    }
-    if (this.me && pitchDetector.turnOn) {
-      var upData = {
-        hh: h
-      };
-      sendWithType('upData', upData);
+      if (hisConnectAlready && myConnectAlready) {
+        var up2 = new PVector(0, -h);
+        var antiGravity = new PVector(0, -8);
+        this.addF(up2);
+        this.addF(antiGravity);
+        console.log(h);
+      }
     }
   };
 
@@ -277,10 +304,10 @@
           var disL = dis.mag();
           if (disL < item.radius + that.size) {
             that.hurt = true;
-            var thick = map(item.radius, 0, 60, 0, 16);
-            thick = constrain(thick, 0, 20);
-            // var thick = map(item.radius, 0, 60, 0, 100);
-            // thick = constrain(thick, 0, 100);
+            // var thick = map(item.radius, 0, 60, 0, 16);
+            // thick = constrain(thick, 0, 20);
+            var thick = map(item.radius, 0, 60, 0, 100);
+            thick = constrain(thick, 0, 100);
             that.hit += thick;
             //otherMash.score++;
             var f = item.vel.mult(0.2);

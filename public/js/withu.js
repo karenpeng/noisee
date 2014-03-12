@@ -56,6 +56,7 @@
 
         case 'upData':
           mashes[1].goUp(message.data.hh);
+          //console.log(message.data.hh);
           break;
 
         case 'rightData':
@@ -69,6 +70,10 @@
         case 'bulletInfo':
           mashes[1].bullets.push(new Bullet(message.data.bulletX, message
             .data.bulletY, message.data.bulletR, message.data.bulletL));
+          break;
+
+        case 'overData':
+          over = true;
           break;
 
         default:

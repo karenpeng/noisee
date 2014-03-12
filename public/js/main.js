@@ -48,54 +48,24 @@
     $("#word").hide();
     mashes = [];
     $("#countDown").fadeIn();
-    setTimeout(
-      function () {
-        //nothing
-      }, 2000);
-    setTimeout(
-      function () {
-        $("#countDown").css("font-size", "60px");
-        $("#countDown").css("text-align", "center");
-        $("#countDown").html(5);
-      }, 3000);
-    setTimeout(
-      function () {
-        $("#countDown").html(4);
-      }, 4000);
-    setTimeout(
-      function () {
-        $("#countDown").html(3);
-      }, 5000);
-    setTimeout(
-      function () {
-        $("#countDown").html(2);
-      }, 6000);
-    setTimeout(
-      function () {
-        $("#countDown").html(1);
-      }, 7000);
-    setTimeout(
-      function () {
-        $("#countDown").fadeOut();
-        animate = true;
-      }, 8000);
+    countingDown();
 
     if (exports.iAmInit) {
       mashes[0] = new Mash(19, 4, 50, width / 6, height / 4);
       mashes[0].red = red;
       mashes[0].green = green;
       mashes[0].blue = blue;
-      mashes[0].me = true;
       mashes[1] = new Mash(19, 4, 50, width * 5 / 6, height / 4);
       mashes[1].left = false;
+      mashes[1].me = false;
     } else {
       mashes[0] = new Mash(19, 4, 50, width * 5 / 6, height / 4);
       mashes[0].red = red;
       mashes[0].green = green;
       mashes[0].blue = blue;
-      mashes[0].me = true;
       mashes[0].left = false;
       mashes[1] = new Mash(19, 4, 50, width / 6, height / 4);
+      mashes[1].me = false;
     }
     exports.boundary = width / 2;
     exports.mashes = mashes;
@@ -149,23 +119,23 @@
       mashes[1].check(mashes[0]);
       drawBoundary();
       gameOver();
-      if (animate) {
-        fill(240, 30, 10);
-        textSize(20);
-        if (mashes[0].center.x < width / 2) {
-          text("score : " + mashes[0].score, 20, 40);
-          text("score : " + mashes[1].score, width - 140, 40);
-        } else {
-          text("score : " + mashes[1].score, 20, 40);
-          text("score : " + mashes[0].score, width - 140, 40);
-        }
-      }
       mashes.forEach(function (item) {
-        if (item.me && connectCount <= 80) {
+        if (item.me && connectCount <= 140) {
           fill(255);
           text("YOU", item.center.x - 10, item.center.y);
         }
       });
+      if (animate) {
+        fill(240, 30, 10);
+        textSize(20);
+        if (mashes[0].center.x < width / 2) {
+          text("score : " + mashes[0].score, 20, 30);
+          text("score : " + mashes[1].score, width - 140, 30);
+        } else {
+          text("score : " + mashes[1].score, 20, 30);
+          text("score : " + mashes[0].score, width - 140, 30);
+        }
+      }
     }
     // textSize(60);
     // fill(0);
@@ -220,36 +190,78 @@
   }
 
   function gameOver() {
-    mashes.forEach(function (item) {
-      if (item.hit >= width / 2 - 20) {
-        textSize(60);
-        fill(246, 10, 10);
-        noStroke();
-        if (item.me) {
-          if (item.center.x > width / 2) {
-            text("YOU LOSE", width - 420, height / 2);
-          } else {
-            text("YOU LOSE", 100, height / 2);
-          }
+    if (exports.over) {
+      textSize(60);
+      fill(246, 10, 10);
+      noStroke();
+      if (item.me) {
+        if (item.center.x > width / 2) {
+          text("YOU LOSE", width - 420, height / 2);
         } else {
-          if (item.center.x > width / 2) {
-            text("YOU WIN", 140, height / 2);
-          } else {
-            text("YOU WIN", width - 400, height / 2);
-          }
+          text("YOU LOSE", 100, height / 2);
         }
-        noLoop();
-        exports.over = true;
-        setTimeout(function () {}, 2000);
-        setTimeout(function () {
-          $("#cover").show();
-          $("#again").show();
-          $("#again").click(function () {
-            location.reload();
-          });
-        }, 2400);
+      } else {
+        if (item.center.x > width / 2) {
+          text("YOU WIN", 140, height / 2);
+        } else {
+          text("YOU WIN", width - 400, height / 2);
+        }
       }
-    })
+      noLoop();
+      exports.over = true;
+      setTimeout(function () {}, 2000);
+      setTimeout(function () {
+        $("#cover").show();
+        $("#again").show();
+        $("#again").click(function () {
+          location.reload();
+        });
+      }, 2100);
+    } else {
+      mashes.forEach(function (item) {
+        if (item.hit >= width / 2 - 20) {
+          exports.over = true;
+          var overData = {
+            overMsg: true
+          };
+          sendWithType("overData", overData);
+        }
+      });
+    }
+  }
+
+  function countingDown() {
+    setTimeout(
+      function () {
+        //nothing
+      }, 2000);
+    setTimeout(
+      function () {
+        $("#countDown").css("font-size", "60px");
+        $("#countDown").css("text-align", "center");
+        $("#countDown").html(5);
+      }, 3000);
+    setTimeout(
+      function () {
+        $("#countDown").html(4);
+      }, 4000);
+    setTimeout(
+      function () {
+        $("#countDown").html(3);
+      }, 5000);
+    setTimeout(
+      function () {
+        $("#countDown").html(2);
+      }, 6000);
+    setTimeout(
+      function () {
+        $("#countDown").html(1);
+      }, 7000);
+    setTimeout(
+      function () {
+        $("#countDown").fadeOut();
+        animate = true;
+      }, 8000);
   }
   /////////////////////////////////////////////////////////////////
 
@@ -258,18 +270,20 @@
     if (event.which === 32) {
       if (!mashes[0].hurt && animate) {
         var r = mapVolume(pitchDetector.volume);
-        mashes[0].bullets.push(new Bullet(mashes[0].center.x, mashes[0].center
-          .y,
-          r, mashes[0].left));
+        if (r > 0) {
+          mashes[0].bullets.push(new Bullet(mashes[0].center.x, mashes[0].center
+            .y,
+            r, mashes[0].left));
 
-        if (myConnectAlready && hisConnectAlready) {
-          var bulletInfo = {
-            bulletX: mashes[0].center.x,
-            bulletY: mashes[0].center.y,
-            bulletR: r,
-            bulletL: mashes[0].left
-          };
-          sendWithType('bulletInfo', bulletInfo);
+          if (myConnectAlready && hisConnectAlready) {
+            var bulletInfo = {
+              bulletX: mashes[0].center.x,
+              bulletY: mashes[0].center.y,
+              bulletR: r,
+              bulletL: mashes[0].left
+            };
+            sendWithType('bulletInfo', bulletInfo);
+          }
         }
       }
     }
