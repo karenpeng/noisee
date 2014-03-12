@@ -152,6 +152,17 @@
       mashes[1].check(mashes[0]);
       drawBoundary();
       gameOver();
+      if (animate) {
+        fill(240, 30, 10);
+        textSize(20);
+        if (mashes[0].center.x < width / 2) {
+          text("score : " + mashes[0].score, 20, 40);
+          text("score : " + mashes[1].score, width - 140, 40);
+        } else {
+          text("score : " + mashes[1].score, 20, 40);
+          text("score : " + mashes[0].score, width - 140, 40);
+        }
+      }
       mashes.forEach(function (item) {
         if (item.me && connectCount <= 80) {
           fill(255);
@@ -185,7 +196,7 @@
     } else {
       var volumeResult = userVolume.update(input);
       if (connectCount > 500) {
-        volume = map(input, volumeResult.mininmum + 1, volumeResult.maxinmum,
+        volume = map(input, volumeResult.mininmum + 0.8, volumeResult.maxinmum,
           0,
           25);
       } else {
@@ -193,7 +204,7 @@
           0,
           37);
       }
-      console.log(volume);
+      //console.log(volume);
     }
     volume = constrain(volume, 0, 55);
     return volume;

@@ -164,10 +164,11 @@
     this.preH = 0;
     this.me = false;
     this.size = size;
-    this.red = random(50, 150);
-    this.green = random(50, 150);
-    this.blue = random(50, 150);
+    this.red = random(80, 150);
+    this.green = random(80, 150);
+    this.blue = random(80, 150);
     this.hit = 0;
+    this.score = 0;
 
     for (var j = 0; j < this.n; j++) {
       this.b.push(new Ball(x + cos(j * PI / this.n * 2) * size, y +
@@ -280,12 +281,16 @@
             var thick = map(item.radius, 0, 60, 0, 14);
             thick = constrain(thick, 0, 16);
             that.hit += thick;
+            //otherMash.score++;
             var f = item.vel.mult(0.2);
             that.addF(f);
             item.isDead = true;
           }
         }
       })
+    }
+    if (that.hurt) {
+      otherMash.score++;
     }
   }
 

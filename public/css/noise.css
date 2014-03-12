@@ -51,6 +51,7 @@ canvas{
   width:80px;
   color: green;
   margin-top: 10px;
+  margin-bottom: 10px;
   background-color: white;
   cursor: pointer;
 }
@@ -81,7 +82,7 @@ canvas{
   z-index: 2;
   top:0;
   right:0;
-  margin-top: -36px;
+  margin-top: -33px;
   margin-right: -40px;
 }
 #fork:hover{
