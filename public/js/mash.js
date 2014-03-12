@@ -106,7 +106,7 @@
 
   function Bullet(x, y, r, left) {
     this.left = left;
-    this.life = 30;
+    this.life = 28;
     this.loc = new PVector(x, y);
     if (this.left) {
       this.vel = new PVector(2, 0);
