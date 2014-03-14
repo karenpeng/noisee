@@ -117,6 +117,18 @@
     }
 
     if (mashes.length > 1) {
+      //if (connectCount % 3 === 0) {
+      var ballPos = [];
+      mashes[0].b.forEach(function (item) {
+        var ballPosPair = [item.loc.x, item.loc.y];
+        ballPos.push(ballPosPair);
+      })
+      var ballData = {
+        ballPosition: ballPos
+      };
+      sendWithType('ballData', ballData);
+      //}
+
       mashes[0].check(mashes[1]);
       mashes[1].check(mashes[0]);
       drawBoundary();
@@ -278,13 +290,13 @@
             r, mashes[0].left));
 
           if (myConnectAlready && hisConnectAlready) {
-            var bulletInfo = {
+            var bulletData = {
               bulletX: mashes[0].center.x,
               bulletY: mashes[0].center.y,
               bulletR: r,
               bulletL: mashes[0].left
             };
-            sendWithType('bulletInfo', bulletInfo);
+            sendWithType('bulletData', bulletData);
           }
         }
       }

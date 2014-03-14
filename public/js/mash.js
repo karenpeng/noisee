@@ -1,6 +1,6 @@
 (function (exports) {
 
-  function Ball(x, y, m) {
+  function Ball(x, y, m, id) {
     this.loc = new PVector(x, y);
     this.vel = new PVector();
     this.acc = new PVector();
@@ -296,10 +296,10 @@
   };
 
   Mash.prototype.check = function (otherMash) {
-    var that = this
+    var that = this;
     if (otherMash.bullets.length > 0) {
       otherMash.bullets.forEach(function (item) {
-        if (item.radius > 0.1) {
+        if (item.radius > 0.05) {
           var dis = PVector.sub(item.loc, that.center);
           var disL = dis.mag();
           if (disL < item.radius + that.size) {
@@ -320,7 +320,7 @@
     if (that.hurt) {
       otherMash.score++;
     }
-  }
+  };
 
   Mash.prototype.show = function () {
     stroke(30);

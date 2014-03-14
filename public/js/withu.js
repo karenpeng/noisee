@@ -54,6 +54,13 @@
           mashes[1].blue = message.data.bb;
           break;
 
+        case 'ballData':
+          for (var i = 0; i < mashes[1].b.length; i++) {
+            mashes[1].b[i].loc.x = message.data.ballPosition[i][0];
+            mashes[1].b[i].loc.y = message.data.ballPosition[i][1];
+          }
+          break;
+
         case 'upData':
           mashes[1].goUp(message.data.hh);
           //console.log(message.data.hh);
@@ -67,7 +74,7 @@
           mashes[1].addF(left);
           break;
 
-        case 'bulletInfo':
+        case 'bulletData':
           mashes[1].bullets.push(new Bullet(message.data.bulletX, message
             .data.bulletY, message.data.bulletR, message.data.bulletL));
           break;
