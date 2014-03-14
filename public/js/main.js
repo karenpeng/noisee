@@ -12,7 +12,7 @@
   var userPitch, userVolume;
   exports.iAmInit;
   var animate = true;
-  var resultComeOut = false;
+  var win;
 
   function beCenter(w, selector) {
     var windowWidth = window.innerWidth;
@@ -98,6 +98,7 @@
       stroke(0);
       line(width / 2, 0, width / 2, height);
     }
+
     mashes.forEach(function (item) {
       item.renew();
       item.show();
@@ -138,9 +139,6 @@
         }
       }
     }
-    // textSize(60);
-    // fill(0);
-    // text(connectCount, 50, 50);
   };
 
   function mapPitch(input) {
@@ -192,67 +190,46 @@
 
   function gameOver() {
     if (exports.over) {
-      resultComeOut = true;
-      textSize(60);
-      fill(246, 10, 10);
-      noStroke();
       if (mashes[0].score < mashes[1].score) {
-        if (mashes[0].center.x > width / 2) {
-          text("YOU LOSE", width - 420, height / 2);
-        } else {
-          text("YOU LOSE", 100, height / 2);
-        }
+        win = false;
       } else {
-        if (mashes[0].center.x < width / 2) {
-          text("YOU WIN", 140, height / 2);
-        } else {
-          text("YOU WIN", width - 400, height / 2);
-        }
+        win = true;
       }
-      noLoop();
       playAgain();
-    }
-    mashes.forEach(function (item) {
-      if (item.hit >= width / 2 - 20) {
-        textSize(60);
-        fill(246, 10, 10);
-        noStroke();
-        if (!resultComeOut) {
+    } else {
+      mashes.forEach(function (item) {
+        if (item.hit >= width / 2 - 20) {
           if (item.me) {
-            if (item.center.x > width / 2) {
-              text("YOU LOSE", width - 420, height / 2);
-            } else {
-              text("YOU LOSE", 100, height / 2);
-            }
+            win = false;
           } else {
-            if (item.center.x < width / 2) {
-              text("YOU WIN", 140, height / 2);
-            } else {
-              text("YOU WIN", width - 400, height / 2);
-            }
+            win = true;
           }
-          resultComeOut = true;
+          playAgain();
+          exports.over = true;
+          var overData = {
+            overOverOver: true
+          };
+          sendWithType("overData", overData);
         }
-        noLoop();
-        playAgain();
-        exports.over = true;
-        var overData = {
-          overOverOver: true
-        };
-        sendWithType("overData", overData);
-      }
-    })
+      })
+    }
   }
 
   function playAgain() {
-    setTimeout(function () {}, 2000);
-    setTimeout(function () {
-      $("#cover").show();
-      $("#again").show();
-      $("#again").click(function () {
-        location.reload();
-      });
-    }, 2400);
+    //setTimeout(function () {}, 2000);
+    noLoop();
+    //setTimeout(function () {
+    $("#cover").show();
+    if (win) {
+      $("#win").show();
+    } else {
+      $("#lose").show();
+    }
+    $("#again").show();
+    $("#again").click(function () {
+      location.reload();
+    });
+    //}, 2400);
   }
 
   function countingDown() {

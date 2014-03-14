@@ -31,11 +31,18 @@
     </p>
     <a id="forkNoisee" target="_blank" href="https://github.com/karenpeng/noisee"><img id="fork" src="/public/image/fork20.png"></a>
     <div id="cover"></div>
-    <span id="again">Play Again</span>
+    <div id="wrap">
+      <p id="win">YOU WIN!</p>
+      <p id="lose">YOU LOSE!</p>
+      <p id="again">Play Again</p>
+    </div>
+    <audio autoplay id="somebodyVoice"></audio>
   </body>
   <script type="text/javascript">
     $("#cover").hide();
     $("#again").hide();
+    $("#win").hide();
+    $("#lose").hide();
     $("#word").hide();
     $("#countDown").hide();
     $("#ok").click(function () {
@@ -50,8 +57,6 @@
   <script type="text/javascript" src ="/public/js/withu.js"></script>
   <script type="text/javascript" src ="/public/js/mash.js"></script>
   <script type="text/javascript" src ="/public/js/main.js"></script>
-
-  <audio autoplay id="somebodyVoice"></audio>
   <script type="text/javascript">stLight.options({publisher: "a757c337-8e36-4e28-8032-c8b58ff79d08", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
   <script>
   var options={ "publisher": "a757c337-8e36-4e28-8032-c8b58ff79d08", "position": "right", "ad": { "visible": false, "openDelay": 5, "closeDelay": 0}, "chicklets": { "items": ["facebook", "twitter", "googleplus", "email", "sharethis"]}};
@@ -65,6 +70,5 @@
 
   ga('create', 'UA-48873153-1', 'karenlabs.com');
   ga('send', 'pageview');
-
-</script>
+  </script>
 </html>

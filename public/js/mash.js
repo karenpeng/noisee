@@ -299,12 +299,12 @@
     var that = this
     if (otherMash.bullets.length > 0) {
       otherMash.bullets.forEach(function (item) {
-        if (item.radius > 0.2) {
+        if (item.radius > 0.1) {
           var dis = PVector.sub(item.loc, that.center);
           var disL = dis.mag();
           if (disL < item.radius + that.size) {
             that.hurt = true;
-            var thick = map(item.radius, 0, 60, 0, 18);
+            var thick = map(item.radius, 0, 60, 0, 16);
             thick = constrain(thick, 0, 20);
             // var thick = map(item.radius, 0, 60, 0, 100);
             // thick = constrain(thick, 0, 100);
