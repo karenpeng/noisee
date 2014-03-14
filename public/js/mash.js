@@ -1,6 +1,6 @@
 (function (exports) {
 
-  function Ball(x, y, m, id) {
+  function Ball(x, y, m) {
     this.loc = new PVector(x, y);
     this.vel = new PVector();
     this.acc = new PVector();
