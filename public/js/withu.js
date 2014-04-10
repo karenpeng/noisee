@@ -102,9 +102,8 @@
   connectionReady(onConnection);
 
   var peer = new Peer({
-    // host: 'resonate-peer-server.herokuapp.com',
-    // port: 80
-    key: 'qvjlc339a88jv2t9'
+    host: 'resonate-peer-server.herokuapp.com',
+    port: 80
   });
 
   peer.on('open', function (id) {
