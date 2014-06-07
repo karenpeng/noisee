@@ -5,9 +5,7 @@
   var right = new PVector(50, 0);
   var mashes = [];
   var connectCount;
-  var red = 0;
-  var green = 0;
-  var blue = 0;
+  var hue = 0;
   exports.over = false;
   var userPitch, userVolume;
   exports.iAmInit;
@@ -23,7 +21,7 @@
   }
 
   exports.setup = function () {
-    createGraphics(1100, 600);
+    createCanvas(1100, 600);
     beCenter(width, "canvas");
     beCenter(width, "#intro");
     beCenter(width, "#word");
@@ -34,11 +32,10 @@
 
     smooth();
     frameRate(24);
+    colorMode(HSB, 1);
 
     mashes.push(new Mash(19, 4, 50, width / 2, height / 4));
-    red = mashes[0].red;
-    green = mashes[0].green;
-    blue = mashes[0].blue;
+    hue = mashes[0].hue;
 
     userPitch = new getUserValue(100, 220);
     userVolume = new getUserValue(128, 133);
@@ -53,17 +50,13 @@
 
     if (exports.iAmInit) {
       mashes[0] = new Mash(19, 4, 50, width / 6, height / 4);
-      mashes[0].red = red;
-      mashes[0].green = green;
-      mashes[0].blue = blue;
+      mashes[0].hue = hue;
       mashes[1] = new Mash(19, 4, 50, width * 5 / 6, height / 4);
       mashes[1].left = false;
       mashes[1].me = false;
     } else {
       mashes[0] = new Mash(19, 4, 50, width * 5 / 6, height / 4);
-      mashes[0].red = red;
-      mashes[0].green = green;
-      mashes[0].blue = blue;
+      mashes[0].hue = hue;
       mashes[0].left = false;
       mashes[1] = new Mash(19, 4, 50, width / 6, height / 4);
       mashes[1].me = false;
@@ -71,9 +64,10 @@
     exports.boundary = width / 2;
     exports.mashes = mashes;
     var colorData = {
-      rr: red,
-      gg: green,
-      bb: blue
+      // rr: red,
+      // gg: green,
+      // bb: blue
+      hue: hue
     };
     sendWithType('colorData', colorData);
   };
@@ -85,17 +79,17 @@
       beCenter(width, "#word");
     });
 
-    background(255);
+    background(0, 0, 1);
 
     for (var i = 20; i < width; i += 30) {
       for (var j = 20; j < height; j += 30) {
         noStroke();
-        fill(250);
+        fill(0, 0, 0.98);
         rect(i, j, 10, 10);
       }
     }
     if (mashes.length > 1) {
-      stroke(0);
+      stroke(0, 0, 0);
       line(width / 2, 0, width / 2, height);
     }
 
@@ -122,7 +116,7 @@
       mashes[0].b.forEach(function (item) {
         var ballPosPair = [item.loc.x, item.loc.y];
         ballPos.push(ballPosPair);
-      })
+      });
       var ballData = {
         ballPosition: ballPos
       };
@@ -135,12 +129,12 @@
       gameOver();
       mashes.forEach(function (item) {
         if (item.me && !animate) {
-          fill(255);
+          fill(0, 0, 1);
           text("YOU", item.center.x - 10, item.center.y);
         }
       });
       if (animate) {
-        fill(240, 30, 10);
+        fill(1, 1, 1);
         textSize(20);
         if (mashes[0].center.x < width / 2) {
           text("score : " + mashes[0].score, 20, 30);
@@ -189,7 +183,7 @@
   }
 
   function drawBoundary() {
-    fill(0);
+    fill(0, 0, 0);
     noStroke();
     if (mashes[0].left) {
       rect(0, 0, mashes[0].hit, height);
@@ -223,7 +217,7 @@
           };
           sendWithType("overData", overData);
         }
-      })
+      });
     }
   }
 

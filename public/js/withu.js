@@ -49,9 +49,7 @@
           break;
 
         case 'colorData':
-          mashes[1].red = message.data.rr;
-          mashes[1].green = message.data.gg;
-          mashes[1].blue = message.data.bb;
+          mashes[1].hue = message.data.hue;
           break;
 
         case 'ballData':

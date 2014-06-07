@@ -48,9 +48,9 @@
     this.acc.add(f);
   };
 
-  Ball.prototype.render = function (r, g, b) {
-    stroke(30);
-    fill(r, g, b);
+  Ball.prototype.render = function (h) {
+    stroke(0, 0, 0);
+    fill(h, 0.4, 1);
     ellipse(this.loc.x, this.loc.y, this.mass * 2, this.mass * 2);
   };
 
@@ -145,7 +145,7 @@
   Bullet.prototype.show = function () {
     noFill();
     strokeWeight(1);
-    stroke(30);
+    stroke(0, 0, 0);
     ellipse(this.loc.x, this.loc.y, this.radius * 2, this.radius * 2);
   };
 
@@ -164,9 +164,7 @@
     this.preH = 0;
     this.me = true;
     this.size = size;
-    this.red = random(80, 150);
-    this.green = random(80, 150);
-    this.blue = random(80, 150);
+    this.hue = random(0, 1);
     this.hit = 0;
     this.score = 0;
 
@@ -209,7 +207,7 @@
     }
     this.b.forEach(function (item) {
       item.update(that.hit, that.left);
-      item.render(that.red + 100, that.green + 100, that.blue + 100);
+      item.render(that.hue);
     });
     this.s.forEach(function (item) {
       item.connect();
@@ -315,7 +313,7 @@
             item.isDead = true;
           }
         }
-      })
+      });
     }
     if (that.hurt) {
       otherMash.score++;
@@ -323,11 +321,11 @@
   };
 
   Mash.prototype.show = function () {
-    stroke(30);
+    stroke(0, 0, 0);
     if (!this.hurt) {
-      fill(this.red, this.green, this.blue);
+      fill(this.hue, 1, 1);
     } else {
-      fill(250);
+      fill(0, 0, 1);
     }
     beginShape();
     for (var k = 0; k < this.n; k++) {
