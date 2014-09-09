@@ -12,19 +12,27 @@
   var animate = true;
   var win;
 
-  function beCenter(w, selector) {
+  function beCenter(selector, w, h) {
     var windowWidth = window.innerWidth;
     var gap = (windowWidth - w) / 2;
     var gapString = gap.toString();
     var gapCss = gapString + 'px';
     $(selector).css("margin-left", gapCss);
+
+    if (typeof h !== "undefined") {
+      var windowHeight = window.innerHeight;
+      var gap2 = (windowHeight - h) / 2;
+      var gap2String = gap2.toString();
+      var gap2Css = gap2String + 'px';
+      $(selector).css("margin-top", gap2Css);
+    }
   }
 
   exports.setup = function () {
     createCanvas(1100, 600);
-    beCenter(width, "canvas");
-    beCenter(width, "#intro");
-    beCenter(width, "#word");
+    beCenter("canvas", width, height);
+    beCenter("#intro", width, height);
+    beCenter("#word", width, height);
     exports.width = width;
     exports.iAmInit = false;
     exports.boundary = width;
