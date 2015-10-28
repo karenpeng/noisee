@@ -11,6 +11,7 @@
   exports.iAmInit;
   var animate = true;
   var win;
+  //var underLine;
 
   function beCenter(selector, w, h) {
     var windowWidth = window.innerWidth;
@@ -44,6 +45,7 @@
 
     mashes.push(new Mash(19, 4, 50, width / 2, height / 4));
     hue = mashes[0].hue;
+    //underLine = new UnderLine();
 
     userPitch = new getUserValue(100, 220);
     userVolume = new getUserValue(128, 133);
@@ -101,6 +103,8 @@
       line(width / 2, 0, width / 2, height);
     }
 
+    //underLine.render();
+
     mashes.forEach(function (item) {
       item.renew();
       item.show();
@@ -152,7 +156,11 @@
           text("score : " + mashes[0].score, width - 140, 30);
         }
       }
+      //underLine.check(mashes[0].center, mashes[1].center);
+    } else {
+      //underLine.check(mashes[0].center);
     }
+
   };
 
   function mapPitch(input) {

@@ -43,7 +43,7 @@
   };
 
   Ball.prototype.applyForce = function (force) {
-    var f = force.get();
+    var f = force;
     f.div(this.mass);
     this.acc.add(f);
   };
@@ -353,10 +353,44 @@
     };
   };
 
+  function UnderLine() {
+    this.vertices = [];
+    for (var i = 0; i < 1100; i += 40) {
+      this.vertices.push([i, 500]);
+    }
+  }
+
+  UnderLine.prototype.check = function (a, b) {
+    this.vertices.forEach(function (v) {
+      if (abs(v[0] - a.x) < 20) {
+        v[0] = a.x;
+        v[1] += (a.y - v[1]) * 0.1;
+      }
+    });
+    if (b !== undefined) {
+      this.vertices.forEach(function (v) {
+        if (abs(v[0] - b.x) < 20) {
+          v[0] = b.x;
+          v[1] += (b.y - v[1]) * 0.1;
+        }
+      });
+    }
+  };
+
+  UnderLine.prototype.render = function () {
+    beginShape();
+    stroke(0);
+    this.vertices.forEach(function (v) {
+      curveVertex(v[0], v[1]);
+    });
+    endShape();
+  };
+
   exports.Ball = Ball;
   exports.Spring = Spring;
   exports.Mash = Mash;
   exports.Bullet = Bullet;
   exports.getUserValue = getUserValue;
+  exports.UnderLine = UnderLine;
 
 })(this);
